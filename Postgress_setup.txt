@@ -1,0 +1,14 @@
+psql -U postgres
+CREATE USER lucky WITH PASSWORD 'cxz';
+CREATE DATABASE hospital_db;
+\c hospital_db;
+CREATE SCHEMA newschema AUTHORIZATION postgres;
+ALTER ROLE postgres SET client_encoding TO 'utf8';
+ALTER ROLE postgres SET default_transaction_isolation TO 'read committed';
+ALTER ROLE postgres SET timezone TO 'UTC';
+python .\manage.py makemigrations
+python .\manage.py migrate
+ALTER ROLE postgres IN DATABASE hospital_db set search_path = newschema;
+\dt;
+d core_appointment;
+SELECT * FROM core_appointment LIMIT 10;
